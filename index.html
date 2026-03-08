@@ -2350,29 +2350,4 @@ async function submitDonation(){
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('https://formspree.io/f/mqeykbek', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        'First Name':      first,
-        'Last Name':       last,
-        'Phone':           phone,
-        'email':           email,
-        'Mailing Address': address || '(not provided)',
-        'Donation Amount': amount  || '(not specified)',
-        'Notes':           notes   || '(none)'
-      })
-    });
-
-    if(response.ok){
-      document.getElementById('donateForm').style.display='none';
-      document.getElementById('donateSuccess').style.display='block';
-    } else {
-      btn.disabled = false;
-      btn.textContent = '💛 Submit Donation Interest';
-      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
-    }
-  } catch(err){
-    btn.disabled = false;
-    btn.textContent = '💛 Submit Donation Interest';
-    alert('Net
+    var response = await fetch('
