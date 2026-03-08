@@ -1986,7 +1986,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
 
         <!-- Mailing reminder box -->
         <div style="background:var(--gold-light);border-left:4px solid var(--gold);padding:10px 14px;margin-bottom:16px;font-family:'Barlow',sans-serif;font-size:12px;color:#78350f;line-height:1.6">
-          <strong>📬 Mail checks to:</strong> Bob Resser · 16865 Burkhart Road · Orrville, Ohio 44667<br>
+          <strong>📬 Mail checks to:</strong> Noelle Ressler · 16865 Burkhart Road · Orrville, Ohio 44667<br>
           Make checks payable to <strong>BT Fire EMS Levy 2026</strong><br>
           Questions? Email <strong><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong>
         </div>
@@ -2001,7 +2001,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
       <h4 style="color:var(--gold)">Thank You for Your Generosity!</h4>
       <p>A campaign organizer will be in touch shortly with next steps.<br><br>
       You can also mail your check directly to:<br>
-      <strong style="color:var(--navy)">Bob Resser · 16865 Burkhart Road · Orrville, Ohio 44667</strong><br><br>
+      <strong style="color:var(--navy)">Noelle Ressler · 16865 Burkhart Road · Orrville, Ohio 44667</strong><br><br>
       Questions? Call <strong>(330) 422-3525</strong> or email <strong style="color:var(--red)"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong></p>
       <button class="modal-submit" style="margin-top:20px;max-width:200px;display:block;margin-left:auto;margin-right:auto;background:var(--gold)" onclick="closeDonateModal()">Close</button>
     </div>
@@ -2075,7 +2075,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
       <span class="s-icon">✅</span>
       <h4>Request Received — Thank You!</h4>
       <p>A campaign volunteer will reach out within 1–2 days to arrange delivery of your yard sign.<br><br>
-      Questions? Email <strong style="color:var(--red)"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong> or call <strong>Bob Resser (330) 422-3525</strong>.</p>
+      Questions? Email <strong style="color:var(--red)"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong> or call <strong>Noelle Ressler (330) 422-3525</strong>.</p>
       <button class="modal-submit" style="margin-top:20px;max-width:200px;display:block;margin-left:auto;margin-right:auto" onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -2099,7 +2099,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
       <p>Campaign costs — printing, signs, mailers — add up. A contribution of any size helps us reach every voter in the township.</p>
       <ul class="dv-list">
         <li>Checks payable to <strong style="color:#fff">BT Fire EMS Levy 2026</strong></li>
-        <li>Mail to: <strong style="color:#fff">Bob Resser, 16865 Burkhart Road, Orrville, Ohio 44667</strong></li>
+        <li>Mail to: <strong style="color:#fff">Noelle Ressler, 16865 Burkhart Road, Orrville, Ohio 44667</strong></li>
         <li>Questions? Call <strong style="color:#fff">(330) 422-3525</strong></li>
         <li>Email: <strong style="color:#fcd34d"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong></li>
       </ul>
@@ -2126,7 +2126,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
 
   <!-- Contact bar -->
   <div class="dv-contact-bar">
-    <div class="dv-ci"><strong>Bob Resser</strong>(330) 422-3525</div>
+    <div class="dv-ci"><strong>Noelle Ressler</strong>(330) 422-3525</div>
     <div class="dv-ci"><strong>John Rutter</strong>330-465-8982</div>
     <div class="dv-ci"><strong>Email Campaign</strong><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></div>
     <div class="dv-ci"><strong>Campaign Website</strong><a href="https://baughmantownship.info" target="_blank">baughmantownship.info</a></div>
@@ -2194,7 +2194,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
       <span class="s-icon">🎉</span>
       <h4>You're Signed Up — Thank You!</h4>
       <p>A campaign organizer will contact you within 1–2 days to get you started.<br><br>
-      Questions? Email <strong style="color:var(--red)"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong> or call <strong>Bob Resser (330) 422-3525</strong>.</p>
+      Questions? Email <strong style="color:var(--red)"><a href="mailto:levyvote2026@gmail.com">levyvote2026@gmail.com</a></strong> or call <strong>Noelle Ressler (330) 422-3525</strong>.</p>
       <button class="modal-submit" style="margin-top:20px;max-width:200px;display:block;margin-left:auto;margin-right:auto;background:#16a34a" onclick="closeVolModal()">Close</button>
     </div>
   </div>
@@ -2244,7 +2244,37 @@ async function submitYardSign(){
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('https://formspree.io/f/xjgavwqb', {
+    var response = await fetch('https://formspree.io/f/mqeykbek', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        'First Name':  first,
+        'Last Name':   last,
+        'Phone':       phone,
+        'email':       email,
+        'Address':     address || '(none)',
+        'Amount':      amount || '(not specified)',
+        'Notes':       notes || '(none)'
+      })
+    });
+
+    if(response.ok){
+      document.getElementById('donateForm').style.display='none';
+      document.getElementById('donSuccess').style.display='block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = '💛 Submit Donation Interest';
+      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
+    }
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = '💛 Submit Donation Interest';
+    alert('Network error. Please check your connection and try again.');
+  }
+}
+</script>
+</body>
+</html>https://formspree.io/f/xjgavwqb', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
@@ -2302,7 +2332,37 @@ async function submitVolunteer(){
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('https://formspree.io/f/maqpyogn', {
+    var response = await fetch('https://formspree.io/f/mqeykbek', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        'First Name':  first,
+        'Last Name':   last,
+        'Phone':       phone,
+        'email':       email,
+        'Address':     address || '(none)',
+        'Amount':      amount || '(not specified)',
+        'Notes':       notes || '(none)'
+      })
+    });
+
+    if(response.ok){
+      document.getElementById('donateForm').style.display='none';
+      document.getElementById('donSuccess').style.display='block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = '💛 Submit Donation Interest';
+      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
+    }
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = '💛 Submit Donation Interest';
+    alert('Network error. Please check your connection and try again.');
+  }
+}
+</script>
+</body>
+</html>https://formspree.io/f/maqpyogn', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
@@ -2350,4 +2410,34 @@ async function submitDonation(){
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('
+    var response = await fetch('https://formspree.io/f/mqeykbek', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        'First Name':  first,
+        'Last Name':   last,
+        'Phone':       phone,
+        'email':       email,
+        'Address':     address || '(none)',
+        'Amount':      amount || '(not specified)',
+        'Notes':       notes || '(none)'
+      })
+    });
+
+    if(response.ok){
+      document.getElementById('donateForm').style.display='none';
+      document.getElementById('donSuccess').style.display='block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = '💛 Submit Donation Interest';
+      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
+    }
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = '💛 Submit Donation Interest';
+    alert('Network error. Please check your connection and try again.');
+  }
+}
+</script>
+</body>
+</html>
