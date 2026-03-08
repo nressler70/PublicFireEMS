@@ -2175,7 +2175,7 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
             <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-canvass"> Door-to-door canvassing</label>
             <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-signs"> Deliver yard signs</label>
             <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-flyers"> Distribute flyers</label>
-            <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-phone"> Phone/text banking</label>
+            <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-phonebank"> Phone/text banking</label>
             <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-social"> Social media sharing</label>
             <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow',sans-serif;font-size:13px;color:var(--gray);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" id="vol-eday"> Election Day help</label>
           </div>
@@ -2205,7 +2205,6 @@ hr.rule{border:none;border-top:1px solid var(--border);margin:20px 0}
 // ── Modal open/close helpers ──────────────────────────────
 function closeModal(){
   document.getElementById('yardsignModal').classList.remove('open');
-  // Reset form if user closes after a failed attempt
   document.getElementById('signForm').style.display='block';
 }
 function closeVolModal(){
@@ -2238,59 +2237,27 @@ async function submitYardSign(){
     return;
   }
 
-  // Disable button and show loading state while we wait for Formspree
   var btn = document.querySelector('#signForm .modal-submit');
   btn.disabled = true;
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('https://formspree.io/f/mqeykbek', {
+    var response = await fetch('https://formspree.io/f/xjgavwqb', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        'First Name':  first,
-        'Last Name':   last,
-        'Phone':       phone,
-        'email':       email,
-        'Address':     address || '(none)',
-        'Amount':      amount || '(not specified)',
-        'Notes':       notes || '(none)'
+        'First Name': first,
+        'Last Name':  last,
+        'Address':    addr,
+        'City':       city,
+        'ZIP':        zip,
+        'Phone':      phone,
+        'email':      email,
+        'Notes':      notes || '(none)'
       })
     });
 
     if(response.ok){
-      document.getElementById('donateForm').style.display='none';
-      document.getElementById('donSuccess').style.display='block';
-    } else {
-      btn.disabled = false;
-      btn.textContent = '💛 Submit Donation Interest';
-      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
-    }
-  } catch(err){
-    btn.disabled = false;
-    btn.textContent = '💛 Submit Donation Interest';
-    alert('Network error. Please check your connection and try again.');
-  }
-}
-</script>
-</body>
-</html>https://formspree.io/f/xjgavwqb', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        'First Name':   first,
-        'Last Name':    last,
-        'Address':      addr,
-        'City':         city,
-        'ZIP':          zip,
-        'Phone':        phone,
-        'email':        email,   // Formspree uses "email" field for reply-to
-        'Notes':        notes || '(none)'
-      })
-    });
-
-    if(response.ok){
-      // Success — hide form, show thank-you message
       document.getElementById('signForm').style.display='none';
       document.getElementById('signSuccess').style.display='block';
     } else {
@@ -2307,71 +2274,40 @@ async function submitYardSign(){
 
 // ── Volunteer submission → Formspree ─────────────────────
 async function submitVolunteer(){
-  var first  = document.getElementById('vol-first').value.trim();
-  var last   = document.getElementById('vol-last').value.trim();
-  var phone  = document.getElementById('vol-phone').value.trim();
-  var email  = document.getElementById('vol-email').value.trim();
-  var notes  = document.getElementById('vol-notes').value.trim();
+  var first = document.getElementById('vol-first').value.trim();
+  var last  = document.getElementById('vol-last').value.trim();
+  var phone = document.getElementById('vol-phone').value.trim();
+  var email = document.getElementById('vol-email').value.trim();
+  var notes = document.getElementById('vol-notes').value.trim();
 
   if(!first||!last||!phone||!email){
     alert('Please fill in your name, phone, and email before submitting.');
     return;
   }
 
-  // Collect checked volunteer interests
   var interests = [];
-  if(document.getElementById('vol-canvass').checked) interests.push('Door-to-door canvassing');
-  if(document.getElementById('vol-signs').checked)   interests.push('Deliver yard signs');
-  if(document.getElementById('vol-flyers').checked)  interests.push('Distribute flyers');
-  if(document.getElementById('vol-phone').checked)   interests.push('Phone/text banking');
-  if(document.getElementById('vol-social').checked)  interests.push('Social media sharing');
-  if(document.getElementById('vol-eday').checked)    interests.push('Election Day help');
+  if(document.getElementById('vol-canvass').checked)   interests.push('Door-to-door canvassing');
+  if(document.getElementById('vol-signs').checked)     interests.push('Deliver yard signs');
+  if(document.getElementById('vol-flyers').checked)    interests.push('Distribute flyers');
+  if(document.getElementById('vol-phonebank').checked) interests.push('Phone/text banking');
+  if(document.getElementById('vol-social').checked)    interests.push('Social media sharing');
+  if(document.getElementById('vol-eday').checked)      interests.push('Election Day help');
 
   var btn = document.querySelector('#volForm .modal-submit');
   btn.disabled = true;
   btn.textContent = '⏳ Sending…';
 
   try {
-    var response = await fetch('https://formspree.io/f/mqeykbek', {
+    var response = await fetch('https://formspree.io/f/maqpyogn', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        'First Name':  first,
-        'Last Name':   last,
-        'Phone':       phone,
-        'email':       email,
-        'Address':     address || '(none)',
-        'Amount':      amount || '(not specified)',
-        'Notes':       notes || '(none)'
-      })
-    });
-
-    if(response.ok){
-      document.getElementById('donateForm').style.display='none';
-      document.getElementById('donSuccess').style.display='block';
-    } else {
-      btn.disabled = false;
-      btn.textContent = '💛 Submit Donation Interest';
-      alert('Something went wrong. Please try again or email levyvote2026@gmail.com directly.');
-    }
-  } catch(err){
-    btn.disabled = false;
-    btn.textContent = '💛 Submit Donation Interest';
-    alert('Network error. Please check your connection and try again.');
-  }
-}
-</script>
-</body>
-</html>https://formspree.io/f/maqpyogn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        'First Name':        first,
-        'Last Name':         last,
-        'Phone':             phone,
-        'email':             email,
-        'Volunteer For':     interests.length ? interests.join(', ') : 'Not specified',
-        'Additional Notes':  notes || '(none)'
+        'First Name':       first,
+        'Last Name':        last,
+        'Phone':            phone,
+        'email':            email,
+        'Volunteer For':    interests.length ? interests.join(', ') : 'Not specified',
+        'Additional Notes': notes || '(none)'
       })
     });
 
@@ -2414,19 +2350,19 @@ async function submitDonation(){
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        'First Name':  first,
-        'Last Name':   last,
-        'Phone':       phone,
-        'email':       email,
-        'Address':     address || '(none)',
-        'Amount':      amount || '(not specified)',
-        'Notes':       notes || '(none)'
+        'First Name': first,
+        'Last Name':  last,
+        'Phone':      phone,
+        'email':      email,
+        'Address':    address || '(none)',
+        'Amount':     amount  || '(not specified)',
+        'Notes':      notes   || '(none)'
       })
     });
 
     if(response.ok){
       document.getElementById('donateForm').style.display='none';
-      document.getElementById('donSuccess').style.display='block';
+      document.getElementById('donateSuccess').style.display='block';
     } else {
       btn.disabled = false;
       btn.textContent = '💛 Submit Donation Interest';
